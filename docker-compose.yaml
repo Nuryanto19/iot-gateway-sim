@@ -1,0 +1,50 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: iot-broker
+    ports:
+      - "8883:8883"
+    volumes:
+      - ./infra/mosquitto/config:/mosquitto/config
+      - ./infra/mosquitto/config/certs:/mosquitto/config/certs
+      - ./infra/mosquitto/data:/mosquitto/data
+      - ./infra/mosquitto/log:/mosquitto/log
+    networks:
+      - iot-network
+    restart: unless-stopped
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
+      - DOCKER_INFLUXDB_INIT_ORG=my-iot-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=sensor-bucket
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-admin-token-123
+    volumes:
+      - ./infra/influxdb/data:/var/lib/influxdb2
+      - ./infra/influxdb/data/influxdb_config:/etc/influxdb2
+      - ./infra/influxdb/provisioning:/docker-entrypoint-initdb.d:ro
+    networks:
+      - iot-network
+    restart: unless-stopped
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    depends_on:
+      - mosquitto
+      - influxdb
+    volumes:
+      - ./infra/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./gateway-certs:/etc/telegraf/certs:ro
+    networks:
+      - iot-network
+    restart: unless-stopped
+
+networks:
+  iot-network:
+    driver: bridge

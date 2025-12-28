@@ -1,0 +1,9 @@
+*.pid
+bin/
+logs/
+infra/mosquitto/config/certs/
+infra/mosquitto/data/
+infra/mosquitto/log/
+gateway-certs/
+notes.md
+infra/influxdb/data/

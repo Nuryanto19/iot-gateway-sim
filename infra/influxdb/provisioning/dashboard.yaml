@@ -1,0 +1,87 @@
+apiVersion: influxdata.com/v2alpha1
+kind: Dashboard
+metadata:
+  name: iot-system-monitor
+spec:
+  name: IoT System Monitor
+  description: Metrics for IoT Gateway monitoring
+  charts:
+    - name: "Temperature (TCP)"
+      kind: Xy
+      width: 6
+      height: 5
+      xPos: 0
+      yPos: 0
+      queries:
+        - query: |
+            from(bucket: "sensor-bucket")
+              |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+              |> filter(fn: (r) => r["_measurement"] == "sensor_metrics")
+              |> filter(fn: (r) => r["DeviceID"] == "202")
+              |> filter(fn: (r) => r["Protocol"] == "udp")
+              |> filter(fn: (r) => r["_field"] == "Value")
+              |> filter(fn: (r) => r["topic"] == "sensor/batch")
+              |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+              |> yield(name: "mean")
+      axes:
+        - name: x
+          label: Time
+          scale: linear
+        - name: y
+          label: Temperature
+          scale: linear
+          suffix: "°C"
+          base: "10"
+          domain: [0, 100]
+      colors:
+        - name: Nineteen Eighty Four
+          type: scale
+          hex: "#31C0F6"
+      geom: line
+      hoverDimension: auto
+      position: overlaid
+      legendOpacity: 0.7
+      show: true
+
+    - name: "Voltage (UDP)"
+      kind: Xy
+      width: 6
+      height: 5
+      xPos: 6
+      yPos: 0
+      queries:
+        - query: |
+            from(bucket: "sensor-bucket")
+              |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+              |> filter(fn: (r) => r["_measurement"] == "sensor_metrics")
+              |> filter(fn: (r) => r["DeviceID"] == "101")
+              |> filter(fn: (r) => r["Protocol"] == "tcp")
+              |> filter(fn: (r) => r["_field"] == "Value")
+              |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+              |> yield(name: "mean")
+      axes:
+        - name: x
+          base: "10"
+          scale: linear
+        - name: y
+          label: Voltage
+          scale: linear
+          suffix: "V"
+          base: "10"
+          domain: [160, 180]
+      colors:
+        - name: Nineteen Eighty Four
+          type: scale
+          hex: "#31C0F6"
+        - name: Nineteen Eighty Four
+          type: scale
+          hex: "#A500A5"
+        - name: Nineteen Eighty Four
+          type: scale
+          hex: "#FF7E27"
+      geom: line
+      hoverDimension: auto
+      position: overlaid
+      opacity: 0.87
+      legendOpacity: 1
+      show: true
