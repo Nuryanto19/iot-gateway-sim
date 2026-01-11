@@ -6,7 +6,7 @@ spec:
   name: IoT System Monitor
   description: Metrics for IoT Gateway monitoring
   charts:
-    - name: "Temperature (TCP)"
+    - name: "Temperature (UDP)"
       kind: Xy
       width: 6
       height: 5
@@ -43,7 +43,7 @@ spec:
       legendOpacity: 0.7
       show: true
 
-    - name: "Voltage (UDP)"
+    - name: "Voltage (TCP)"
       kind: Xy
       width: 6
       height: 5
