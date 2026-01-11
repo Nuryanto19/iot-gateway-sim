@@ -2,6 +2,8 @@
 
 A high-performance, end-to-end IoT simulation system featuring a **Multi-protocol Gateway** and a **Device Simulator**. This project demonstrates modern Go patterns, secure communication, and automated infrastructure provisioning.
 
+**⚠️ WARNING: FOR LOCAL DEMO ONLY**
+
 ---
 
 ## **🏛️ System Architecture**
@@ -15,19 +17,18 @@ The system follows a modern IoT telemetry pipeline:
 3. **Broker:** Eclipse Mosquitto handles message distribution.
 4. **Time-Series Stack:** Telegraf consumes MQTT data and persists it to InfluxDB.
 
-
-___
+---
 
 ## **✨ Key Features**
 
-* **Multi-Protocol Ingestion:** Concurrent **TCP** and **UDP** listeners for diverse sensor simulations.
-* **Buffered Processing:** Implements internal batching to optimize network throughput and reduce broker overhead.
-* **End-to-End Security:** Strict **mTLS (Mutual TLS)** implementation between the Gateway and MQTT Broker for encrypted, authenticated communication.
-* **Automated Provisioning:** Zero-config dashboard setup using InfluxDB Templates and shell automation.
-* **Advanced Concurrency:** Controlled lifecycle management using `context.Context` and `sync.WaitGroup` to ensure Graceful Shutdown and prevent goroutine leaks.
-* **Production-Ready Structure:** Clean Architecture following the standard Go project layout.
+- **Multi-Protocol Ingestion:** Concurrent **TCP** and **UDP** listeners for diverse sensor simulations.
+- **Buffered Processing:** Implements internal batching to optimize network throughput and reduce broker overhead.
+- **End-to-End Security:** Strict **mTLS (Mutual TLS)** implementation between the Gateway and MQTT Broker for encrypted, authenticated communication.
+- **Automated Provisioning:** Zero-config dashboard setup using InfluxDB Templates and shell automation.
+- **Advanced Concurrency:** Controlled lifecycle management using `context.Context` and `sync.WaitGroup` to ensure Graceful Shutdown and prevent goroutine leaks.
+- **Production-Ready Structure:** Clean Architecture following the standard Go project layout.
 
-___
+---
 
 ## **📂 Directory Structure**
 
@@ -42,7 +43,32 @@ ___
 └── Makefile            # Orchestration and automation
 ```
 
-___
+---
+
+## **🎛️ Configuration**
+
+This project uses environment variables for flexible configuration. All necessary variables are provided with ready-to-use default values.
+
+**First Step:** Before running, copy the example file `.env.example` to `.env`. This command is safe to run even if the `.env` file already exists.
+
+```bash
+cp .env.example .env
+```
+
+The `.env` file is ignored by Git, making it a safe place to store local configurations or secrets. For this demo, you **do not need to change** the contents of the `.env` file as the defaults are suitable for local execution.
+
+The following table explains each variable if you wish to customize them:
+
+| Variable              | Description                                                          | Default                |
+| :-------------------- | :------------------------------------------------------------------- | :--------------------- |
+| `INFLUX_TOKEN`        | Secret token for InfluxDB and Telegraf authentication.               | (provided)             |
+| `GATEWAY_TCP_ADDR`    | The TCP address the Gateway listens on.                              | `:5000`                |
+| `GATEWAY_UDP_ADDR`    | The UDP address the Gateway listens on.                              | `:5001`                |
+| `MQTT_BROKER_ADDR`    | The address of the Mosquitto broker (in Docker) for the Gateway to connect to. | `ssl://localhost:8883` |
+| `SIM_TARGET_TCP_ADDR` | The Gateway's TCP address targeted by the Simulator.                 | `localhost:5000`       |
+| `SIM_TARGET_UDP_ADDR` | The Gateway's UDP address targeted by the Simulator.
+
+---
 
 ## **📊 Dashboard Preview**
 
@@ -53,15 +79,16 @@ The system includes a pre-configured InfluxDB dashboard to monitor sensor metric
 - InfluxDB Dashboard : http://localhost:8086
 - Username : admin
 - Password : adminpassword
-___
+
+---
 
 ## **🔧 Prerequisites**
 
-* **Go** (v1.22 or higher)
-* **Docker** & **Docker Compose**
-* **Make** (Standard on Linux/WSL)
+- **Go** (v1.22 or higher)
+- **Docker** & **Docker Compose**
+- **Make** (Standard on Linux/WSL)
 
-___
+---
 
 ## **🚀 Quick Start**
 
@@ -87,27 +114,28 @@ make run
 
 **4. Operations & Monitoring**
 
-* **Check System Health:** `make stats` (Verify PIDs and Container status)
-* **View Real-time Logs:** `make logs` 
-* **Stop Everything:** `make stop`
+- **Check System Health:** `make stats` (Verify PIDs and Container status)
+- **View Real-time Logs:** `make logs`
+- **Stop Everything:** `make stop`
 
 **5. Access InfluxDB**
 Navigate to `http://localhost:8086`. The dashboard is automatically provisioned upon startup via `infra/influxdb/provisioning/init.sh`.
 
-___
+---
 
 ## **🎛️ Makefile Reference**
 
 | **Command**             | **Action**                                              |
-|:----------------------- |:------------------------------------------------------- |
+| :---------------------- | :------------------------------------------------------ |
 | `make all` / `make run` | Build binaries, start infra, and launch apps.           |
 | `make build`            | Compile Go source code into bin/.                       |
 | `make start-infra`      | Launch Docker containers (Mosquitto, Influx, Telegraf). |
 | `make stats`            | Display health status of Go processes and Docker.       |
 | `make logs`             | Tail logs for both Gateway and Simulator.               |
 | `make clean`            | Remove binaries, PIDs, and log files.                   |
-| `make help`             | Showing available command 
-___
+| `make help`             | Showing available command                               |
+
+---
 
 ## **📄 License**
 

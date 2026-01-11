@@ -7,3 +7,4 @@ infra/mosquitto/log/
 gateway-certs/
 notes.md
 infra/influxdb/data/
+.env

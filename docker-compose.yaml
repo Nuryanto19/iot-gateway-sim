@@ -24,7 +24,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
       - DOCKER_INFLUXDB_INIT_ORG=my-iot-org
       - DOCKER_INFLUXDB_INIT_BUCKET=sensor-bucket
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-admin-token-123
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN}
     volumes:
       - ./infra/influxdb/data:/var/lib/influxdb2
       - ./infra/influxdb/data/influxdb_config:/etc/influxdb2
@@ -41,6 +41,8 @@ services:
     volumes:
       - ./infra/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - ./gateway-certs:/etc/telegraf/certs:ro
+    environment:
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
     networks:
       - iot-network
     restart: unless-stopped
