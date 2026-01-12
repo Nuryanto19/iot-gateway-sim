@@ -1,8 +1,8 @@
-package simulation
+package simulator
 
 import (
 	"context"
-	"iot-gateway-sim/pkg/model"
+	"iot-gateway-sim/internal/model"
 	"log"
 	"math/rand/v2"
 	"net"

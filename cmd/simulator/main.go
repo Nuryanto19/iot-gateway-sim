@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"iot-gateway-sim/internal/simulation"
+	"iot-gateway-sim/internal/simulator"
 	"log"
 	"os"
 	"os/signal"
@@ -26,10 +26,10 @@ func main() {
 	var wg sync.WaitGroup
 
 	wg.Go(func() {
-		simulation.SimulateTCPSever(ctx, tcpTargetAddr, 101)
+		simulator.SimulateTCPSever(ctx, tcpTargetAddr, 101)
 	})
 	wg.Go(func() {
-		simulation.SimulateUDPServer(ctx, udpTargetAddr, 202)
+		simulator.SimulateUDPServer(ctx, udpTargetAddr, 202)
 	})
 
 	sigChan := make(chan os.Signal, 1)

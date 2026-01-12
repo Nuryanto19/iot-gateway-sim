@@ -2,7 +2,7 @@ package ingestion
 
 import (
 	"context"
-	"iot-gateway-sim/pkg/model"
+	"iot-gateway-sim/internal/model"
 	"log"
 	"net"
 )

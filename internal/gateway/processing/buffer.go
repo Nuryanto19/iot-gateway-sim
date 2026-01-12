@@ -3,8 +3,8 @@ package processing
 import (
 	"context"
 	"encoding/json"
-	"iot-gateway-sim/internal/transport"
-	"iot-gateway-sim/pkg/model"
+	"iot-gateway-sim/internal/gateway/transport"
+	"iot-gateway-sim/internal/model"
 	"log"
 	"time"
 )

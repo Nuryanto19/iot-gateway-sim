@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"iot-gateway-sim/internal/ingestion"
-	"iot-gateway-sim/internal/processing"
-	"iot-gateway-sim/internal/transport"
-	"iot-gateway-sim/pkg/model"
+	"iot-gateway-sim/internal/gateway/ingestion"
+	"iot-gateway-sim/internal/gateway/processing"
+	"iot-gateway-sim/internal/gateway/transport"
+	"iot-gateway-sim/internal/model"
 	"log"
 	"os"
 	"os/signal"
